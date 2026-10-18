@@ -36,6 +36,13 @@ def grammar():
         'f"{x:{y:}}"',
         'f"{x:{y:1}}"',
 
+        # A backslash does not escape the following replacement field.
+        'f"\\{1}"',
+        'rf"\\{1}"',
+        'f"\\{1:>2}"',
+        'rf"\\{foobar:>3o}"',
+        'f"""\\{1}"""',
+
         # Escapes
         'f"{{}}"',
         'f"{{{1}}}"',
