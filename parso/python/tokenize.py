@@ -112,12 +112,15 @@ def _get_token_collection(version_info):
 
 
 unicode_character_name = r'[A-Za-z0-9\-]+(?: [A-Za-z0-9\-]+)*'
+# `\{` is a literal backslash plus a replacement field. The backslash does
+# not escape the brace, so the escape alternative must not consume `{`.
 fstring_string_single_line = _compile(
     r'(?:\{\{|\}\}|\\N\{' + unicode_character_name
-    + r'\}|\\(?:\r\n?|\n)|\\[^\r\nN]|[^{}\r\n\\])+'
+    + r'\}|\\(?:\r\n?|\n)|\\[^\r\nN{]|\\(?=\{)|[^{}\r\n\\])+'
 )
 fstring_string_multi_line = _compile(
-    r'(?:\{\{|\}\}|\\N\{' + unicode_character_name + r'\}|\\[^N]|[^{}\\])+'
+    r'(?:\{\{|\}\}|\\N\{' + unicode_character_name
+    + r'\}|\\[^N{]|\\(?=\{)|[^{}\\])+'
 )
 fstring_format_spec_single_line = _compile(r'(?:\\(?:\r\n?|\n)|[^{}\r\n])+')
 fstring_format_spec_multi_line = _compile(r'[^{}]+')
